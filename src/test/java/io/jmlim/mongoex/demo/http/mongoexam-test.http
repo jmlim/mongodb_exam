@@ -1,0 +1,31 @@
+###
+POST http://localhost:8080/account
+Content-Type: application/json
+
+{
+  "username": "테스트맨",
+  "email": "hackerljm@naver.com"
+}
+
+###
+PUT http://localhost:8080/account/5da989914b2ca83b1154e23f
+Content-Type: application/json
+
+{
+  "username": "업데이트된 테스트맨",
+  "email": "hackerljm2@naver.com"
+}
+
+###
+GET http://localhost:8080/account/5da93a0cef970946939ed5a6
+Content-Type: application/json
+
+###
+DELETE http://localhost:8080/account/5da98a194b2ca83b1154e242
+Content-Type: application/json
+
+###
+GET http://localhost:8080/account/
+Content-Type: application/json
+
+###
