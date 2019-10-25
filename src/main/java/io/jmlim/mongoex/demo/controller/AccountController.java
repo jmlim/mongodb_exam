@@ -1,21 +1,15 @@
 package io.jmlim.mongoex.demo.controller;
 
-import io.jmlim.mongoex.demo.domain.Account;
-import io.jmlim.mongoex.demo.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
-    private final AccountRepository repository;
+    /*private final AccountRepository repository;
 
     @GetMapping
     public List<Account> getAllAccounts() {
@@ -46,5 +40,5 @@ public class AccountController {
         Optional<Account> optAccount = repository.findById(id);
         optAccount.ifPresent(account -> repository.delete(account));
         optAccount.orElseThrow(NoSuchElementException::new);
-    }
+    }*/
 }
