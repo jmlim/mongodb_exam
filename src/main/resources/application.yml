@@ -3,7 +3,7 @@ spring:
     mongodb:
       username: jmlim
       password: 12345
-      uri: mongodb://내아이피/tutorial2
+      uri: mongodb://몽고디비아이피/tutorial2
 
 logging:
   level:

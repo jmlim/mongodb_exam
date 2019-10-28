@@ -24,7 +24,7 @@ public class Review {
     private Date date;
     private String title;
     private String text;
-    private String rating;
+    private int rating;
     private ObjectId userId;
     private String username;
     private int helpfulVotes;

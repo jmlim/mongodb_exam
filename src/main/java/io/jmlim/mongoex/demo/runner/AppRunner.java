@@ -2,12 +2,18 @@ package io.jmlim.mongoex.demo.runner;
 
 import io.jmlim.mongoex.demo.domain.category.Ancestor;
 import io.jmlim.mongoex.demo.domain.category.Category;
+import io.jmlim.mongoex.demo.domain.order.LineItem;
+import io.jmlim.mongoex.demo.domain.order.Order;
+import io.jmlim.mongoex.demo.domain.order.ShippingAddress;
 import io.jmlim.mongoex.demo.domain.product.Detail;
 import io.jmlim.mongoex.demo.domain.common.Price;
 import io.jmlim.mongoex.demo.domain.product.PriceHistory;
 import io.jmlim.mongoex.demo.domain.product.Product;
-import io.jmlim.mongoex.demo.repository.CategoryRepository;
-import io.jmlim.mongoex.demo.repository.ProductRepository;
+import io.jmlim.mongoex.demo.domain.review.Review;
+import io.jmlim.mongoex.demo.domain.user.Address;
+import io.jmlim.mongoex.demo.domain.user.PaymentMethod;
+import io.jmlim.mongoex.demo.domain.user.User;
+import io.jmlim.mongoex.demo.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.boot.ApplicationArguments;
@@ -27,11 +33,31 @@ public class AppRunner implements ApplicationRunner {
 
     private final ProductRepository productRepository;
 
+    private final UserRepository userRepository;
+
+    private final OrderRepository orderRepository;
+
+    private final ReviewRepository reviewRepository;
+
     @Override
     public void run(ApplicationArguments args) {
 
         categoryRepository.deleteAll();
         productRepository.deleteAll();
+        userRepository.deleteAll();
+        orderRepository.deleteAll();
+        reviewRepository.deleteAll();
+
+        addSampleCategoryAndProduct();
+
+        addSampleUser();
+
+        addSampleOrder();
+
+        addSampleReview();
+    }
+
+    private void addSampleCategoryAndProduct() {
 
         List<Ancestor> ancestors = new ArrayList<>();
 
@@ -72,7 +98,6 @@ public class AppRunner implements ApplicationRunner {
         List<PriceHistory> priceHistories = new ArrayList<>();
         List<ObjectId> categoryIds = new ArrayList<>();
 
-        ObjectId primaryCategory;
         Detail detail = Detail.builder()
                 .weight(47)
                 .weightUnits("lbs")
@@ -120,6 +145,108 @@ public class AppRunner implements ApplicationRunner {
                 .tags(Arrays.asList("tools", "gardening", "soil")).build();
 
         productRepository.insert(product);
+    }
+
+    private void addSampleUser() {
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(Address.builder()
+                .name("home")
+                .street("588 5th Street")
+                .city("Brooklyn")
+                .street("NY")
+                .zip(11215).build());
+        addresses.add(Address.builder()
+                .name("work")
+                .street("1 E. 23rd Street")
+                .city("New York")
+                .street("NY")
+                .zip(10010).build());
+
+        List<PaymentMethod> paymentMethods = new ArrayList<>();
+        paymentMethods.add(PaymentMethod.builder()
+                .name("VISA")
+                .paymentToken("43f6ba1dfda65b8106dc7").build());
+
+        User newUser = User.builder()
+                .username("kbanker")
+                .email("kylebanker@gmail.com")
+                .firstName("Kyle")
+                .lastName("Banker")
+                .hashPassword("bd1cfa194c4a603e7186780824b04419")
+                .address(addresses)
+                .paymentMethod(paymentMethods)
+                .build();
+
+        userRepository.insert(newUser);
+    }
+
+
+    private void addSampleOrder() {
+        // order
+        // find user
+        Optional<User> optionalUser = userRepository.findByUsername("kbanker");
+
+        optionalUser.ifPresent(user -> {
+
+            Optional<Product> optionalProduct = productRepository.findBySlug("wheelbarrow-9092");
+
+            List<LineItem> lineItems = new ArrayList<>();
+            optionalProduct.ifPresent(bySlug -> {
+                Price pricing = bySlug.getPricing();
+
+                LineItem newLineItem = LineItem.builder()
+                        .id(bySlug.getId())
+                        .name(bySlug.getName())
+                        .quantity(1)
+                        .sku(bySlug.getSku())
+                        .pricing(pricing)
+                        .build();
+
+                lineItems.add(newLineItem);
+            });
+
+            Address address = user.getAddress().get(0);
+            ShippingAddress shippingAddress = ShippingAddress.builder().street(address.getStreet())
+                    .city(address.getCity())
+                    .state(address.getState())
+                    .zip(address.getZip())
+                    .build();
+
+            Order newOrder = Order.builder()
+                    .userId(user.getId())
+                    .state("CART")
+                    .lineItems(lineItems)
+                    .shippingAddress(shippingAddress)
+                    .subTotal(4897)
+                    .build();
+
+            orderRepository.insert(newOrder);
+        });
+    }
+
+    private void addSampleReview() {
+        // reviews
+        // find user
+        Optional<User> optionalUser = userRepository.findByUsername("kbanker");
+
+        optionalUser.ifPresent(user -> {
+            Optional<Product> optionalProduct = productRepository.findBySlug("wheelbarrow-9092");
+            optionalProduct.ifPresent(product -> {
+                Review newReview = Review.builder()
+                        .productId(product.getId())
+                        .date(new Date())
+                        .title("Amazing")
+                        .text("Has a squeaky wheel, but still a darn good wheelbarrow.")
+                        .rating(4)
+                        .userId(user.getId())
+                        .username(user.getUsername())
+                        .helpfulVotes(0)
+                        .voterIds(new ArrayList<>())
+                        .build();
+
+                reviewRepository.insert(newReview);
+            });
+        });
     }
 }
 
