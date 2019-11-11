@@ -14,6 +14,7 @@ import io.jmlim.mongoex.demo.domain.user.Address;
 import io.jmlim.mongoex.demo.domain.user.PaymentMethod;
 import io.jmlim.mongoex.demo.domain.user.User;
 import io.jmlim.mongoex.demo.repository.*;
+import io.jmlim.mongoex.demo.service.AggregationSampleService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.boot.ApplicationArguments;
@@ -38,6 +39,8 @@ public class AppRunner implements ApplicationRunner {
     private final OrderRepository orderRepository;
 
     private final ReviewRepository reviewRepository;
+
+    private final AggregationSampleService aggregationSampleService;
 
     @Override
     public void run(ApplicationArguments args) {

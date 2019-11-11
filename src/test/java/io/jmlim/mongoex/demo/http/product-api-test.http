@@ -1,0 +1,77 @@
+
+
+###
+GET http://localhost:8080/product
+Content-Type: application/json
+
+
+
+###
+POST http://localhost:8080/product
+Content-Type: application/json
+
+{
+        "slug" : "wheelbarrow-9093",
+        "sku" : "9093",
+        "name" : "Extra Large Wheelbarrow",
+        "description" : "Heavy duty wheelbarrow...",
+        "details" : {
+                "weight" : 47,
+                "weightUnits" : "lbs",
+                "modelNum" : 11,
+                "manufacturer" : "Acme",
+                "color" : "Green"
+        },
+        "totalReviews" : 4,
+        "averageReview" : 4.5,
+        "pricing" : {
+                "retail" : 20000,
+                "sale" : 5000
+        },
+        "priceHistory" : [
+                {
+                        "retail" : 529700,
+                        "sale" : 429700,
+                        "start" : "2019-10-11T08:47:07.785Z",
+                        "end" : "2019-10-11T08:47:07.785Z"
+                },
+                {
+                  "retail" : 529700,
+                  "sale" : 429700,
+                  "start" : "2019-10-11T08:47:07.785Z",
+                  "end" : "2019-10-11T08:47:07.785Z"
+                }
+        ],
+        "primaryCategory" : "5dc9245072cc004490fa371e",
+        "categoryIds" : [
+                "5dc9245072cc004490fa371e"
+        ],
+        "mainCatId" : "5dc9245072cc004490fa371e",
+        "tags" : [
+                "tools",
+                "gardening",
+                "soil"
+        ]
+}
+
+
+###
+PUT http://localhost:8080/product/add_price_history/5dc53bb19e5ec048f4c26070
+Content-Type: application/json
+
+{
+  "retail": 123,
+  "sale": 2444,
+  "start": "2018-11-20",
+  "end": 1573206961329
+}
+
+###
+PUT http://localhost:8080/product/pricing/5dc53bb19e5ec048f4c26070
+Content-Type: application/json
+
+{
+  "retail": 12030,
+  "sale": 20
+}
+

@@ -1,0 +1,58 @@
+###
+POST http://localhost:8080/category
+Content-Type: application/json
+
+{
+"slug": "",
+"name": "gameitem ~~",
+"description": "gameitem 들들"
+}
+
+###
+GET http://localhost:8080/category
+Content-Type: application/json
+
+###
+
+###
+POST http://localhost:8080/category
+Content-Type: application/json
+
+ {
+    "slug": "ball-1",
+    "name": "Basketball",
+    "description": "농구공",
+    "parentId": "5dc8c8067b2f6e7b704deb58",
+    "ancestors": [
+      {
+        "name": "gameitem ~~",
+        "id": "5dc8c8067b2f6e7b704deb58",
+        "slug": "gameitem"
+      }
+    ]
+  }
+
+###
+PUT http://localhost:8080/category
+Content-Type: application/json
+
+{
+  "slug": "ball-1",
+  "name": "Basketball",
+  "description": "농구1121",
+  "parentId": "5dc8c8067b2f6e7b704deb58",
+  "ancestors": [
+    {
+      "name": "gameitem ~~",
+      "id": "5dc8c8067b2f6e7b704deb58",
+      "slug": "gameitem"
+    }
+  ]
+}
+
+###
+DELETE http://localhost:8080/category/5dc5359d9e5ec048f4c26064
+
+###
+
+
