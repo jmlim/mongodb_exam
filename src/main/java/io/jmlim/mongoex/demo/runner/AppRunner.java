@@ -51,22 +51,21 @@ public class AppRunner implements ApplicationRunner {
         orderRepository.deleteAll();
         reviewRepository.deleteAll();
 
-        addSampleCategoryAndProduct();
-
-        addSampleUser();
-
-        addSampleOrder();
-
-        addSampleReview();
+        for (int i = 0; i < 500; i++) {
+            addSampleCategoryAndProduct(i);
+            addSampleUser(i);
+            addSampleOrder(i);
+            addSampleReview(i);
+        }
     }
 
-    private void addSampleCategoryAndProduct() {
+    private void addSampleCategoryAndProduct(int index) {
 
         List<Ancestor> ancestors = new ArrayList<>();
 
-        Category home = Category.builder().slug("home")
-                .name("Home")
-                .description("Jmlim Home").build();
+        Category home = Category.builder().slug("home" + index)
+                .name("Home" + index)
+                .description("Jmlim Home" + index).build();
 
         home = categoryRepository.insert(home);
 
@@ -76,9 +75,9 @@ public class AppRunner implements ApplicationRunner {
                 .id(home.getId())
                 .build());
 
-        Category outdoors = Category.builder().slug("outdoors")
-                .name("Outdoors")
-                .description("outdoor~~ jmlim")
+        Category outdoors = Category.builder().slug("outdoors" + index)
+                .name("Outdoors" + index)
+                .description("outdoor~~ jmlim" + index)
                 .parentId(home.getId())
                 .ancestors(ancestors).build();
 
@@ -90,92 +89,94 @@ public class AppRunner implements ApplicationRunner {
                 .id(outdoors.getId())
                 .build());
 
-        Category gardeningTool = Category.builder().slug("gardening-tools")
-                .name("Gardening Tools")
-                .description("Gardening gadgets galore!")
+        Category gardeningTool = Category.builder().slug("gardening-tools" + index)
+                .name("Gardening Tools" + index)
+                .description("Gardening gadgets galore!" + index)
                 .parentId(outdoors.getId())
                 .ancestors(ancestors).build();
 
         gardeningTool = categoryRepository.insert(gardeningTool);
 
-        List<PriceHistory> priceHistories = new ArrayList<>();
-        List<ObjectId> categoryIds = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            List<PriceHistory> priceHistories = new ArrayList<>();
+            List<ObjectId> categoryIds = new ArrayList<>();
 
-        Detail detail = Detail.builder()
-                .weight(47)
-                .weightUnits("lbs")
-                .modelNum(4039283402l)
-                .manufacturer("Acme")
-                .color("Green")
-                .build();
-        Price price = Price.builder()
-                .retail(589700)
-                .sale(489700)
-                .build();
+            Detail detail = Detail.builder()
+                    .weight(47)
+                    .weightUnits("lbs" + i)
+                    .modelNum(4039283402l)
+                    .manufacturer("Acme" + i)
+                    .color("Green" + i)
+                    .build();
+            Price price = Price.builder()
+                    .retail(589700)
+                    .sale(489700)
+                    .build();
 
-        PriceHistory priceHistory1 = PriceHistory.builder()
-                .retail(529700)
-                .sale(429700)
-                .start(new Date())
-                .end(new Date()).build();
+            PriceHistory priceHistory1 = PriceHistory.builder()
+                    .retail(529700)
+                    .sale(429700)
+                    .start(new Date())
+                    .end(new Date()).build();
 
-        priceHistories.add(priceHistory1);
+            priceHistories.add(priceHistory1);
 
-        PriceHistory priceHistory2 = PriceHistory.builder()
-                .retail(529700)
-                .sale(529700)
-                .start(new Date())
-                .end(new Date()).build();
+            PriceHistory priceHistory2 = PriceHistory.builder()
+                    .retail(529700)
+                    .sale(529700)
+                    .start(new Date())
+                    .end(new Date()).build();
 
-        priceHistories.add(priceHistory2);
+            priceHistories.add(priceHistory2);
 
 
-        ObjectId gardeningToolId = gardeningTool.getId();
-        categoryIds.add(gardeningToolId);
+            ObjectId gardeningToolId = gardeningTool.getId();
+            categoryIds.add(gardeningToolId);
 
-        Product product = Product.builder().slug("wheelbarrow-9092")
-                .sku("9092")
-                .name("Extra Large Wheelbarrow")
-                .description("Heavy duty wheelbarrow...")
-                .details(detail)
-                .totalReviews(4)
-                .averageReview(4.5)
-                .pricing(price)
-                .priceHistory(priceHistories)
-                .primaryCategory(gardeningToolId)
-                .categoryIds(categoryIds)
-                .mainCatId(gardeningToolId)
-                .tags(Arrays.asList("tools", "gardening", "soil")).build();
+            Product product = Product.builder().slug("wheelbarrow" + index + "-9092" + i)
+                    .sku(index + "9092" + i)
+                    .name("Extra Large Wheelbarrow")
+                    .description("Heavy duty wheelbarrow...")
+                    .details(detail)
+                    .totalReviews(4)
+                    .averageReview(4.5)
+                    .pricing(price)
+                    .priceHistory(priceHistories)
+                    .primaryCategory(gardeningToolId)
+                    .categoryIds(categoryIds)
+                    .mainCatId(gardeningToolId)
+                    .tags(Arrays.asList("tools", "gardening", "soil" + i)).build();
 
-        productRepository.insert(product);
+            productRepository.insert(product);
+        }
     }
 
-    private void addSampleUser() {
+    private void addSampleUser(int index) {
         List<Address> addresses = new ArrayList<>();
         addresses.add(Address.builder()
-                .name("home")
-                .street("588 5th Street")
-                .city("Brooklyn")
-                .street("NY")
+                .name("home" + index)
+                .street("588 5th Street" + index)
+                .city("Brooklyn" + index)
+                .street("NY" + index)
                 .zip(11215).build());
         addresses.add(Address.builder()
-                .name("work")
-                .street("1 E. 23rd Street")
-                .city("New York")
-                .street("NY")
+                .name("work" + index)
+                .street("1 E. 23rd Street" + index)
+                .city("New York" + index)
+                .street("NY" + index)
                 .zip(10010).build());
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
         paymentMethods.add(PaymentMethod.builder()
                 .name("VISA")
-                .paymentToken("43f6ba1dfda65b8106dc7").build());
+                .paymentToken("43f6ba1dfda65b8106dc7" + index).build());
 
         User newUser = User.builder()
-                .username("kbanker")
-                .email("kylebanker@gmail.com")
-                .firstName("Kyle")
-                .lastName("Banker")
-                .hashPassword("bd1cfa194c4a603e7186780824b04419")
+                .username("kbanker" + index)
+                .email("kylebanker" + index + "@gmail.com")
+                .firstName("Kyle" + index)
+                .lastName("Banker" + index)
+                .hashPassword("bd1cfa194c4a603e7186780824b04419" + index)
                 .address(addresses)
                 .paymentMethod(paymentMethods)
                 .build();
@@ -184,71 +185,74 @@ public class AppRunner implements ApplicationRunner {
     }
 
 
-    private void addSampleOrder() {
+    private void addSampleOrder(int index) {
         // order
         // find user
-        Optional<User> optionalUser = userRepository.findByUsername("kbanker");
+        Optional<User> optionalUser = userRepository.findByUsername("kbanker" + index);
 
         optionalUser.ifPresent(user -> {
+            for (int i = 0; i < 20; i++) {
+                Optional<Product> optionalProduct = productRepository.findBySlug("wheelbarrow" + index + "-9092" + i);
 
-            Optional<Product> optionalProduct = productRepository.findBySlug("wheelbarrow-9092");
+                List<LineItem> lineItems = new ArrayList<>();
+                optionalProduct.ifPresent(bySlug -> {
+                    Price pricing = bySlug.getPricing();
 
-            List<LineItem> lineItems = new ArrayList<>();
-            optionalProduct.ifPresent(bySlug -> {
-                Price pricing = bySlug.getPricing();
+                    LineItem newLineItem = LineItem.builder()
+                            .id(bySlug.getId())
+                            .name(bySlug.getName())
+                            .quantity(1)
+                            .sku(bySlug.getSku())
+                            .pricing(pricing)
+                            .build();
 
-                LineItem newLineItem = LineItem.builder()
-                        .id(bySlug.getId())
-                        .name(bySlug.getName())
-                        .quantity(1)
-                        .sku(bySlug.getSku())
-                        .pricing(pricing)
+                    lineItems.add(newLineItem);
+                });
+
+                Address address = user.getAddress().get(0);
+                ShippingAddress shippingAddress = ShippingAddress.builder().street(address.getStreet())
+                        .city(address.getCity())
+                        .state(address.getState())
+                        .zip(address.getZip())
                         .build();
 
-                lineItems.add(newLineItem);
-            });
+                Order newOrder = Order.builder()
+                        .userId(user.getId())
+                        .state("CART")
+                        .lineItems(lineItems)
+                        .shippingAddress(shippingAddress)
+                        .subTotal(4897)
+                        .build();
 
-            Address address = user.getAddress().get(0);
-            ShippingAddress shippingAddress = ShippingAddress.builder().street(address.getStreet())
-                    .city(address.getCity())
-                    .state(address.getState())
-                    .zip(address.getZip())
-                    .build();
-
-            Order newOrder = Order.builder()
-                    .userId(user.getId())
-                    .state("CART")
-                    .lineItems(lineItems)
-                    .shippingAddress(shippingAddress)
-                    .subTotal(4897)
-                    .build();
-
-            orderRepository.insert(newOrder);
+                orderRepository.insert(newOrder);
+            }
         });
     }
 
-    private void addSampleReview() {
+    private void addSampleReview(int index) {
         // reviews
         // find user
         Optional<User> optionalUser = userRepository.findByUsername("kbanker");
 
         optionalUser.ifPresent(user -> {
-            Optional<Product> optionalProduct = productRepository.findBySlug("wheelbarrow-9092");
-            optionalProduct.ifPresent(product -> {
-                Review newReview = Review.builder()
-                        .productId(product.getId())
-                        .date(new Date())
-                        .title("Amazing")
-                        .text("Has a squeaky wheel, but still a darn good wheelbarrow.")
-                        .rating(4)
-                        .userId(user.getId())
-                        .username(user.getUsername())
-                        .helpfulVotes(0)
-                        .voterIds(new ArrayList<>())
-                        .build();
+            for (int i = 0; i < 20; i++) {
+                Optional<Product> optionalProduct = productRepository.findBySlug("wheelbarrow" + index + "-9092" + i);
+                optionalProduct.ifPresent(product -> {
+                    Review newReview = Review.builder()
+                            .productId(product.getId())
+                            .date(new Date())
+                            .title("Amazing")
+                            .text("Has a squeaky wheel, but still a darn good wheelbarrow.")
+                            .rating(4)
+                            .userId(user.getId())
+                            .username(user.getUsername())
+                            .helpfulVotes(0)
+                            .voterIds(new ArrayList<>())
+                            .build();
 
-                reviewRepository.insert(newReview);
-            });
+                    reviewRepository.insert(newReview);
+                });
+            }
         });
     }
 }

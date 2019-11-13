@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/category
+GET http://localhost:8080/category?page=2&size=10
 Content-Type: application/json
 
 ###

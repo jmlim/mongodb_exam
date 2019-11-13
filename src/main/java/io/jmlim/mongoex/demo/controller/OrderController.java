@@ -1,8 +1,6 @@
 package io.jmlim.mongoex.demo.controller;
 
 
-import io.jmlim.mongoex.demo.domain.category.Category;
-import io.jmlim.mongoex.demo.domain.category.CategoryDto;
 import io.jmlim.mongoex.demo.domain.order.Order;
 import io.jmlim.mongoex.demo.domain.order.OrderDto;
 import io.jmlim.mongoex.demo.exception.ApiValidException;
@@ -10,12 +8,14 @@ import io.jmlim.mongoex.demo.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -39,8 +39,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAll() {
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity<Page<Order>> getAll(@PageableDefault(page = 1, size = 10) Pageable pageable) {
+        return ResponseEntity.ok(repository.findAll(pageable));
     }
 
     @PutMapping
