@@ -1,9 +1,7 @@
 spring:
   data:
     mongodb:
-      username: jmlim
-      password: 12345
-      uri: mongodb://10.30.175.219/tutorial2
+      uri: mongodb://id:password정보@호스트:포트/데이터베이스네임
 
 logging:
   level:
